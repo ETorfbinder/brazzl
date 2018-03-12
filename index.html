@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Brazzl v0.1</title>
+    <meta name="description" content="Das Brazzl-Experiment.">
+    <meta name="author" content="Erich Torfbinder">
+    <!-- Für Mobilgeräte, damit diese skalieren können. http://wiki.selfhtml.org/wiki/HTML/Kopfdaten/meta -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes">
+    <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
+    <!-- <script src="main.js"></script> -->
+</head>
+<body>
+    <header>
+        <h1>Hallo Brazzl!</h1>
+    </header>
+    <main>
+
+        <div class="container">
+            <div class="tab tab-1">
+                <table id="table" border="1">
+                    <tr>
+                        <th>Name</th>
+                        <th>Konzert 1</th>
+                        <th>Konzert 2</th>
+                    </tr>
+                </table>
+            </div>
+            <div class="tab tab-2">
+                Name:<input type="text" name="bandit_name" id="bandit_id">
+                Gig 1:<input type="text" name="gig_1" id="gig_1">
+                Gig 2:<input type="text" name="gig_2" id="gig_2">
+
+                <button onclick="addHtmlTableRow();">Hinzufügen</button>
+                <button onclick="editHtmlTableSelectedRow()">Bearbeiten</button>
+                <button onclick="removeSelectedRow()">Löschen</button>
+            </div>
+        </div>
+
+        <script>
+            
+            let rIndex,
+                table = document.getElementById("table");
+
+            // check the empty input
+            function checkEmptyInput() {
+                let isEmpty = false,
+                    bandit_id = document.getElementById("bandit_id").value,
+                    gig_1 = document.getElementById("gig_1").value,
+                    gig_2 = document.getElementById("gig_2").value;
+
+                if(bandit_id === "") {
+                    alert("Bitte Name eingeben.");
+                    isEmpty = true;
+                }
+                
+                else if(gig_1 === "") {
+                    alert("Bitte für Konzert 1 abstimmen.");
+                    isEmpty = true;
+                }
+
+                else if(gig_2 === "") {
+                    alert("Bitte für Konzert 2 abstimmen.");
+                    isEmpty = true;
+                }
+                return isEmpty;
+            }
+
+            // Zeile hinzufügen
+            function addHtmlTableRow() {
+
+                // get the table by id
+                // create a new row and cells
+                // get value from input text
+                // set the values into row cells
+                if(!checkEmptyInput()) {
+                    let newRow = table.insertRow(table.length),
+                        cell1 = newRow.insertCell(0),
+                        cell2 = newRow.insertCell(1),
+                        cell3 = newRow.insertCell(2),
+                        bandit_id = document.getElementById("bandit_id").value,
+                        gig_1 = document.getElementById("gig_1").value,
+                        gig_2 = document.getElementById("gig_2").value;
+
+                    cell1.innerHTML = bandit_id;
+                    cell2.innerHTML = gig_1;
+                    cell3.innerHTML = gig_2;
+                
+                    // call the function to set the event to the new row
+                    selectedRowToInput();
+                }
+            }
+
+            // display selected row data into input text
+            function selectedRowToInput() {
+                
+                    for(var i = 1; i < table.rows.length; i++) {
+                        table.rows[i].onclick = function() {
+                            // get the selected row index
+                            rIndex = this.rowIndex;
+                            document.getElementById("bandit_id").value = this.cells[0].innerHTML;
+                            document.getElementById("gig_1").value = this.cells[1].innerHTML;
+                            document.getElementById("gig_2").value = this.cells[2].innerHTML;
+                        };
+                    }
+            }
+            selectedRowToInput();
+
+            function editHtmlTableSelectedRow() {
+                let bandit_id = document.getElementById("bandit_id").value,
+                    gig_1 = document.getElementById("gig_1").value,
+                    gig_2 = document.getElementById("gig_2").value;
+
+                table.rows[rIndex].cells[0].innerHTML = bandit_id;
+                table.rows[rIndex].cells[1].innerHTML = gig_1;
+                table.rows[rIndex].cells[2].innerHTML = gig_2;
+            }
+
+            function removeSelectedRow() {
+                table.deleteRow(rIndex);
+                // clear input text
+                document.getElementById("bandit_id").value = "";
+                document.getElementById("gig_1").value = "";
+                document.getElementById("gig_2").value = "";
+            }
+        </script>
+    </main>
+    <footer>
+    </footer>
+</body>
+</html>
